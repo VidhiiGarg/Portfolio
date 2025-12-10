@@ -1,0 +1,201 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  /* Smooth scrolling and animations */
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply font-sans bg-background text-foreground antialiased;
+  min-height: 100vh;
+  /* GPU acceleration for smoother animations */
+  transform: translateZ(0);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Performance optimizations */
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+#root {
+  min-height: 100vh;
+  /* Ensure proper stacking context */
+  isolation: isolate;
+}
+
+/* Refined scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 999px;
+  transition: background 0.3s ease;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* Refined glassmorphism card */
+.glass {
+  @apply bg-card/60 border border-slate-800/60 backdrop-blur-xl shadow-[0_20px_50px_rgba(8,15,30,0.85)];
+  /* GPU acceleration */
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Smoother shimmer effect */
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.shimmer::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(
+    115deg,
+    transparent 0%,
+    rgba(248,250,252,0.08) 35%,
+    rgba(248,250,252,0.15) 50%,
+    rgba(248,250,252,0.08) 65%,
+    transparent 100%
+  );
+  opacity: 0;
+  transform: translateX(-150%);
+  transition: opacity 0.3s ease;
+}
+.shimmer:hover::after {
+  opacity: 1;
+  animation: shimmer 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-150%);
+  }
+  100% {
+    transform: translateX(150%);
+  }
+}
+
+/* Magnetic button container */
+.magnetic-area {
+  position: relative;
+  display: inline-block;
+}
+.magnetic-inner {
+  will-change: transform;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Section */
+.section-padding {
+  @apply py-24 md:py-32;
+}
+.section-container {
+  @apply mx-auto max-w-6xl px-4 md:px-6 lg:px-8;
+}
+
+/* Accent ring utility */
+.accent-ring {
+  @apply ring-1 ring-offset-0 ring-sky-500/70;
+}
+
+/* 3D tilt utility */
+.tilt {
+  transform-style: preserve-3d;
+}
+.tilt-inner {
+  transform: translateZ(24px);
+}
+
+/* For react-three-fiber canvas sizing */
+.r3f-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+/* Subtle noise texture */
+.bg-noise {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='noStitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+}
+
+/* Smooth slow spin animation */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 25s linear infinite;
+}
+
+/* Custom smooth fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Ensure smooth transitions globally */
+button,
+a,
+[role="button"] {
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  /* GPU acceleration for interactive elements */
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Performance optimization for canvas */
+canvas {
+  /* GPU acceleration */
+  transform: translateZ(0);
+  will-change: auto;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  /* Disable animated background for reduced motion */
+  canvas {
+    display: none !important;
+  }
+}
